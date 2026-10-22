@@ -24,12 +24,15 @@ DEFAULT_QUESTION = "AIE2026の講座の宿題にある「3レベル」とは何�
 def ask(question: str) -> str:
     client = genai.Client(api_key=get_api_key())
     response = client.models.generate_content(model=MODEL, contents=question)
-
-    # TODO(第1回 演習): response.usage_metadata から
-    #   入力トークン数と出力トークン数を表示してみよう（Copilotに頼んでよい）
+    #Todo(第１回演習）　回答部分
+    usage = response.usage_metadata
+    if usage is not None:
+        print(
+            f"[トークン] 入力: {usage.prompt_token_count} / "
+            f"出力: {usage.candidates_token_count}"
+        )
 
     return response.text
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="素のLLMに質問する")
